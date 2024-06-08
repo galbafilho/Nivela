@@ -1,65 +1,86 @@
 import 'package:flutter/material.dart';
 
-/// Flutter code sample for [AppBar].
+/// Flutter code sample for [Drawer].
 
-void main() => runApp(const AppBarApp());
+void main() => runApp(const DrawerApp());
 
-class AppBarApp extends StatelessWidget {
-  const AppBarApp({super.key});
+class DrawerApp extends StatelessWidget {
+  const DrawerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: AppBarExample(),
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: const DrawerExample(),
     );
   }
 }
 
-class AppBarExample extends StatelessWidget {
-  const AppBarExample({super.key});
+class DrawerExample extends StatefulWidget {
+  const DrawerExample({super.key});
+
+  @override
+  State<DrawerExample> createState() => _DrawerExampleState();
+}
+
+class _DrawerExampleState extends State<DrawerExample> {
+  String selectedPage = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AppBar Demo'),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add_alert),
-            tooltip: 'Show Snackbar',
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('This is a snackbar')));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.navigate_next),
-            tooltip: 'Go to the next page',
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute<void>(
-                builder: (BuildContext context) {
-                  return Scaffold(
-                    appBar: AppBar(
-                      title: const Text('Next page'),
-                    ),
-                    body: const Center(
-                      child: Text(
-                        'This is the next page',
-                        style: TextStyle(fontSize: 24),
-                      ),
-                    ),
-                  );
-                },
-              ));
-            },
-          ),
-        ],
+        title: const Text('Painel', textAlign: TextAlign.center,),
       ),
-      body: const Center(
-        child: Text(
-          'This is the home page',
-          style: TextStyle(fontSize: 24),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration:
+              BoxDecoration(
+                color: Colors.orange,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Perfil'),
+              onTap: () {
+                setState(() {
+                  selectedPage = 'Perfil';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Painel'),
+              onTap: () {
+                setState(() {
+                  selectedPage = 'Painel';
+                });
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Configurações'),
+              onTap: () {
+                setState(() {
+                  selectedPage = 'Configurações';
+                });
+              },
+            ),
+          ],
         ),
+      ),
+      body: Center(
+        child: Text('Page: $selectedPage'),
       ),
     );
   }
